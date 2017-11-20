@@ -4,14 +4,11 @@ var logger = require("morgan");
 var mongoose = require("mongoose");
 var axios = require("axios");
 var cheerio = require("cheerio");
-
-// Require all models
 var db = require("./models");
-
-var PORT = process.env.PORT || 3000;
-
 // Initialize Express
 var app = express();
+
+var PORT = process.env.PORT || 3000;
 
 // Configure middleware
 
@@ -26,10 +23,18 @@ app.use(express.static("public"));
 // Connect to the Mongo DB
 mongoose.Promise = Promise;
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/week18Populater"
-
 var promise = mongoose.connect(MONGODB_URI, {
   useMongoClient: true
 });
+
+if(process.env.NODE_ENV == 'production'){
+  mongoose.connect('mongodb://heroku_pp2vkbr7:c4815ehbbmbckt312h5jqsuehe@ds113746.mlab.com:13746/heroku_pp2vkbr7');
+}
+else{
+  mongoose.connect('mongodb://localhost/news-scraper');
+  // YOU CAN IGNORE THE CONNECTION URL BELOW (LINE 41) THAT WAS JUST FOR DELETING STUFF ON A RE-DEPLOYMENT
+  //mongoose.connect('mongodb://heroku_60zpcwg0:ubn0n27pi2856flqoedo9glvh8@ds119578.mlab.com:19578/heroku_60zpcwg0');
+}
 
 // Routes
 
