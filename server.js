@@ -25,9 +25,11 @@ app.use(express.static("public"));
 // Set mongoose to leverage built in JavaScript ES6 Promises
 // Connect to the Mongo DB
 mongoose.Promise = Promise;
-mongoose.connect("mongodb://localhost/week18Populater", {
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/week18Populater",
+
+var promise = mongoose.connect(MONGODB_URI, {
   useMongoClient: true
-});
+})
 
 // Routes
 
@@ -125,13 +127,6 @@ app.post("/articles/:id", function(req, res) {
 });
 
 // Start the server
-
-/*var MONGODB_URI = process.env.MONGODB_URI 
-
-mongoose.connect({
-  MONGODB_URI: MONGODB_URI
-});*/
-
 
 app.listen(PORT, function() {
   console.log("App running on port " + PORT + "!");
